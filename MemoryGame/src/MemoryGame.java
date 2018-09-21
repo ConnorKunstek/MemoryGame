@@ -37,6 +37,19 @@ public class MemoryGame extends JFrame implements ActionListener
          * and any event handling they need to perform
          */
 
+        restart.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                restartGame();
+            }
+        });
+
+        quit.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                System.exit(0);
+            }
+        });
+
+
         // Allocate two major panels to hold interface
         labelView = new JPanel();  // used to hold labels
         boardView = new JPanel();  // used to hold game board
@@ -77,6 +90,11 @@ public class MemoryGame extends JFrame implements ActionListener
         /*
          * To-Do: What happens when a card gets clicked?----------------------------------------------------------------
          */
+        for(int i = 0; i < 25; i++){
+            if (gameBoard.getCards()[i] == (FlippableCard)e.getSource()) {
+                gameBoard.getCards()[i].showFront();
+            }
+        }
     }
 
     private void restartGame()
@@ -85,8 +103,8 @@ public class MemoryGame extends JFrame implements ActionListener
         gameTime = 0;
         clickCount = 0;
         errorCount = 0;
-        timerLabel.setText("Timer: 0");
-        errorLabel.setText("Errors: 0");
+        timerLabel.setText("Timer: 2");
+        errorLabel.setText("Errors: 2");
 
         // Clear the boardView and have the gameBoard generate a new layout
         boardView.removeAll();

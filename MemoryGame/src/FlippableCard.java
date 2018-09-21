@@ -18,11 +18,15 @@ public class FlippableCard extends JButton
     public FlippableCard() { super(); }
 
     // Constructor with card front initialization
-    public FlippableCard(ImageIcon frontImage)
+    public FlippableCard(ImageIcon frontImage, int index)
     {
         super();
         front = frontImage;
         super.setIcon(front);
+        id = index;
+        //super.setIcon(back);
+        //this.setFrontImage(frontImage);
+        //this.hideFront();
     }
 
     // Set the image used as the front of the card
@@ -32,7 +36,7 @@ public class FlippableCard extends JButton
     public void showFront() {
         /* To-Do: Show the card front */
         //--------------------------------------------------------------------------------------------------------------
-
+        this.setIcon(front);
 
     }
     public void hideFront() {
@@ -40,8 +44,12 @@ public class FlippableCard extends JButton
         /* To-Do: Show the card back  */
         //--------------------------------------------------------------------------------------------------------------
 
-        
+        this.setIcon(back);
 
+    }
+
+    public int getId(){
+        return this.id;
     }
 
     // Metadata: ID number

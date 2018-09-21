@@ -8,14 +8,18 @@ public class Board
     // Array to hold board cards
     private FlippableCard cards[];
 
-    private int deckSize;
+    private int DeckSize;
+    private FlippableCard Selected1;
+    private FlippableCard Selected2;
+    private boolean matched;
 
     // Resource loader
     private ClassLoader loader = getClass().getClassLoader();
 
     public Board(int size, ActionListener AL)
     {
-        deckSize = size;
+        DeckSize = size;
+        matched = false;
         // Allocate and configure the game board: an array of cards
         cards = new FlippableCard[size];
 
@@ -27,12 +31,41 @@ public class Board
             String imgPath = "res/hub" + imageIdx + ".jpg";
             ImageIcon img = new ImageIcon(loader.getResource(imgPath));
 
-            if(i % 2 != 0){ //We only want two cards to have the same image, so change the index on every odd i
+            // Setup one card at a time
+            FlippableCard c = new FlippableCard(img, imageIdx);
+
+            if(i % 2 == 0){ //We only want two cards to have the same image, so change the index on every odd i
                 imageIdx++;  // get ready for the next pair of cards
             }
 
-            // Setup one card at a time
-            FlippableCard c = new FlippableCard(img);
+            c.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                    if(Selected1 != null && Selected2 != null){
+                        if(!matched) {
+                            Selected1.hideFront();
+                            Selected2.hideFront();
+                        }
+                        Selected1=null;
+                        Selected2=null;
+                    }
+                    c.showFront();
+                    if(Selected1 == null){
+                        Selected1 = c;
+                        c.showFront();
+                    }else{
+                        if(Selected2 == null){
+                            Selected2 = c;
+                            c.showFront();
+                            if(checkMatch()){
+                                matched = true;
+
+                            }else{
+                                matched = false;
+                            }
+                        }
+                    }
+                }
+            });
 
             // Add them to the array
             cards[i] = c;
@@ -41,7 +74,8 @@ public class Board
         /*
          * To-Do: Randomize the card positions - DONE
          */
-        shuffleCards();
+        //shuffleCards();
+        resetBoard();
 
     }
 
@@ -59,22 +93,39 @@ public class Board
          */
 
         shuffleCards();
+        for (FlippableCard c : cards){
+            c.hideFront();
+        }
+    }
+
+    public FlippableCard[] getCards(){
+        return this.cards;
+    }
+
+    public boolean checkMatch(){
+        boolean flag = false;
+        System.out.println(Selected1.getId());
+        System.out.println(Selected2.getId());
+        if(Selected1.getId() == Selected2.getId()){
+            flag = true;
+        }
+        return flag;
     }
 
     public void shuffleCards(){
         Random rand = new Random();
-        FlippableCard temp[] = new FlippableCard[deckSize];
-        for(int i = 0; i < deckSize; i++){
+        FlippableCard temp[] = new FlippableCard[DeckSize];
+        for(int i = 0; i < DeckSize; i++){
             boolean check = false;
             while(!check) {
-                int value = rand.nextInt(deckSize);
+                int value = rand.nextInt(DeckSize);
                 if (temp[value] == null){
                     temp[value] = cards[i];
                     check = true;
                 }
             }
         }
-        for(int i = 0; i < deckSize; i++){
+        for(int i = 0; i < DeckSize; i++){
             cards[i] = temp[i];
         }
     }
