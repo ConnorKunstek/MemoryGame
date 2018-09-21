@@ -28,7 +28,7 @@ public class Board
         for (int i = 0; i < size; i++) {
 
             // Load the front image from the resources folder
-            String imgPath = "res/hub" + imageIdx + ".jpg";
+            String imgPath = "res/alc" + imageIdx + ".jpg";
             ImageIcon img = new ImageIcon(loader.getResource(imgPath));
 
             // Setup one card at a time
@@ -38,58 +38,10 @@ public class Board
                 imageIdx++;  // get ready for the next pair of cards
             }
 
-//            c.addActionListener(new ActionListener(){
-//                public void actionPerformed(ActionEvent e){
-//                    if(Selected1 != null && Selected2 != null){
-//
-//                        if(Selected1.getId() == 13){
-//                            Selected1.setEnabled(false);
-//                            Selected1 = Selected2;
-//                        }else{
-//                            if(Selected2.getId() == 13){
-//                                Selected2.setEnabled(false);
-//                                Selected2 = Selected1;
-//                            }
-//                        }
-//                        if(!matched) {
-//                            Selected1.hideFront();
-//                            Selected2.hideFront();
-//                        }else{
-//                            Selected1.setEnabled(false);
-//                            Selected2.setEnabled(false);
-//                        }
-//                        Selected1=null;
-//                        Selected2=null;
-//                    }
-//                    c.showFront();
-//                    if(Selected1 == null){
-//                        Selected1 = c;
-//
-//                        c.showFront();
-//                    }else{
-//                        if(Selected2 == null){
-//                            Selected2 = c;
-//                            c.showFront();
-//                            if(checkMatch()){
-//                                matched = true;
-//
-//                                //super.increaseErrors();
-//                            }else{
-//                                matched = false;
-//                            }
-//                        }
-//                    }
-//                }
-//            });
-
             // Add them to the array
             cards[i] = c;
         }
 
-        /*
-         * To-Do: Randomize the card positions - DONE
-         */
-        //shuffleCards();
         resetBoard();
 
     }
@@ -103,9 +55,6 @@ public class Board
 
     public void resetBoard()
     {
-        /*
-         * To-Do: Reset the flipped cards and randomize the card positions----------------------------------------------
-         */
 
         shuffleCards();
         for (FlippableCard c : cards){

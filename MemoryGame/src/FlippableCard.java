@@ -24,33 +24,18 @@ public class FlippableCard extends JButton
         front = frontImage;
         super.setIcon(front);
         id = index;
-        //super.setIcon(back);
-        //this.setFrontImage(frontImage);
-        //this.hideFront();
     }
 
     // Set the image used as the front of the card
     public void setFrontImage(ImageIcon frontImage) { front = frontImage; }
 
     // Card flipping functions
-    public void showFront() {
-        /* To-Do: Show the card front */
-        //--------------------------------------------------------------------------------------------------------------
-        this.setIcon(front);
+    public void showFront() {this.setIcon(front);
 
     }
-    public void hideFront() {
+    public void hideFront() {this.setIcon(back); }
 
-        /* To-Do: Show the card back  */
-        //--------------------------------------------------------------------------------------------------------------
-
-        this.setIcon(back);
-
-    }
-
-    public int getId(){
-        return this.id;
-    }
+    public int getId(){ return this.id; }
 
     // Metadata: ID number
     public int id() { return id; }
