@@ -34,38 +34,53 @@ public class Board
             // Setup one card at a time
             FlippableCard c = new FlippableCard(img, imageIdx);
 
-            if(i % 2 == 0){ //We only want two cards to have the same image, so change the index on every odd i
+            if(i % 2 != 0){ //We only want two cards to have the same image, so change the index on every odd i
                 imageIdx++;  // get ready for the next pair of cards
             }
 
-            c.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent e){
-                    if(Selected1 != null && Selected2 != null){
-                        if(!matched) {
-                            Selected1.hideFront();
-                            Selected2.hideFront();
-                        }
-                        Selected1=null;
-                        Selected2=null;
-                    }
-                    c.showFront();
-                    if(Selected1 == null){
-                        Selected1 = c;
-                        c.showFront();
-                    }else{
-                        if(Selected2 == null){
-                            Selected2 = c;
-                            c.showFront();
-                            if(checkMatch()){
-                                matched = true;
-
-                            }else{
-                                matched = false;
-                            }
-                        }
-                    }
-                }
-            });
+//            c.addActionListener(new ActionListener(){
+//                public void actionPerformed(ActionEvent e){
+//                    if(Selected1 != null && Selected2 != null){
+//
+//                        if(Selected1.getId() == 13){
+//                            Selected1.setEnabled(false);
+//                            Selected1 = Selected2;
+//                        }else{
+//                            if(Selected2.getId() == 13){
+//                                Selected2.setEnabled(false);
+//                                Selected2 = Selected1;
+//                            }
+//                        }
+//                        if(!matched) {
+//                            Selected1.hideFront();
+//                            Selected2.hideFront();
+//                        }else{
+//                            Selected1.setEnabled(false);
+//                            Selected2.setEnabled(false);
+//                        }
+//                        Selected1=null;
+//                        Selected2=null;
+//                    }
+//                    c.showFront();
+//                    if(Selected1 == null){
+//                        Selected1 = c;
+//
+//                        c.showFront();
+//                    }else{
+//                        if(Selected2 == null){
+//                            Selected2 = c;
+//                            c.showFront();
+//                            if(checkMatch()){
+//                                matched = true;
+//
+//                                //super.increaseErrors();
+//                            }else{
+//                                matched = false;
+//                            }
+//                        }
+//                    }
+//                }
+//            });
 
             // Add them to the array
             cards[i] = c;
@@ -95,6 +110,8 @@ public class Board
         shuffleCards();
         for (FlippableCard c : cards){
             c.hideFront();
+            c.setEnabled(true);
+
         }
     }
 
@@ -102,15 +119,7 @@ public class Board
         return this.cards;
     }
 
-    public boolean checkMatch(){
-        boolean flag = false;
-        System.out.println(Selected1.getId());
-        System.out.println(Selected2.getId());
-        if(Selected1.getId() == Selected2.getId()){
-            flag = true;
-        }
-        return flag;
-    }
+
 
     public void shuffleCards(){
         Random rand = new Random();

@@ -21,6 +21,10 @@ public class MemoryGame extends JFrame implements ActionListener
     // Game timer: will be configured to trigger an event every second
     private Timer gameTimer;
 
+    private FlippableCard Selected1;
+    private FlippableCard Selected2;
+    private boolean matched;
+
     public MemoryGame()
     {
         // Call the base class constructor
@@ -59,6 +63,53 @@ public class MemoryGame extends JFrame implements ActionListener
 
         // Setup the game board with cards
         gameBoard = new Board(25, this);
+        FlippableCard[] cards = gameBoard.getCards();
+
+        for(FlippableCard card : cards) {
+
+            card.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    if (Selected1 != null && Selected2 != null) {
+
+                        if (Selected1.getId() == 13) {
+                            Selected1.setEnabled(false);
+                            Selected1 = Selected2;
+                        } else {
+                            if (Selected2.getId() == 13) {
+                                Selected2.setEnabled(false);
+                                Selected2 = Selected1;
+                            }
+                        }
+                        if (!matched) {
+                            Selected1.hideFront();
+                            Selected2.hideFront();
+                        } else {
+                            Selected1.setEnabled(false);
+                            Selected2.setEnabled(false);
+                        }
+                        Selected1 = null;
+                        Selected2 = null;
+                    }
+                    card.showFront();
+                    if (Selected1 == null) {
+                        Selected1 = card;
+
+                        card.showFront();
+                    } else {
+                        if (Selected2 == null) {
+                            Selected2 = card;
+                            card.showFront();
+                            if (checkMatch()) {
+                                matched = true;
+                            } else {
+                                matched = false;
+                                increaseErrors();
+                            }
+                        }
+                    }
+                }
+            });
+        }
 
         // Add the game board to the board layout area
         boardView.setLayout(new GridLayout(5, 5, 2, 0));
@@ -90,11 +141,12 @@ public class MemoryGame extends JFrame implements ActionListener
         /*
          * To-Do: What happens when a card gets clicked?----------------------------------------------------------------
          */
-        for(int i = 0; i < 25; i++){
-            if (gameBoard.getCards()[i] == (FlippableCard)e.getSource()) {
-                gameBoard.getCards()[i].showFront();
-            }
-        }
+
+    }
+
+    public void increaseErrors(){
+        errorCount++;
+        errorLabel.setText("Errors: "+ errorCount);
     }
 
     private void restartGame()
@@ -103,13 +155,24 @@ public class MemoryGame extends JFrame implements ActionListener
         gameTime = 0;
         clickCount = 0;
         errorCount = 0;
-        timerLabel.setText("Timer: 2");
-        errorLabel.setText("Errors: 2");
+        timerLabel.setText("Timer: 0");
+        errorLabel.setText("Errors: 0");
 
         // Clear the boardView and have the gameBoard generate a new layout
         boardView.removeAll();
         gameBoard.resetBoard();
         gameBoard.fillBoardView(boardView);
+        repaint();
+    }
+
+    public boolean checkMatch(){
+        boolean flag = false;
+        System.out.println(Selected1.getId());
+        System.out.println(Selected2.getId());
+        if(Selected1.getId() == Selected2.getId()){
+            flag = true;
+        }
+        return flag;
     }
 
     public static void main(String args[])
