@@ -9,17 +9,16 @@ public class MemoryGame extends JFrame implements ActionListener
     private FlippableCard prevCard1, prevCard2;
 
     // Labels to display game info
-    private JLabel errorLabel, timerLabel;
+    private JLabel errorLabel;
 
     // layout objects: Views of the board and the label area
     private JPanel boardView, labelView;
 
-    // Record keeping counts and times
-    private int clickCount = 0, gameTime = 0, errorCount = 0;
+    // Record keeping counts
+    private int clickCount = 0,  errorCount = 0;
     private int pairsFound = 0;
 
-    // Game timer: will be configured to trigger an event every second
-    private Timer gameTimer;
+
 
     private FlippableCard Selected1;
     private FlippableCard Selected2;
@@ -33,7 +32,6 @@ public class MemoryGame extends JFrame implements ActionListener
         // Allocate the interface elements
         JButton restart = new JButton("Restart");
         JButton quit = new JButton("Quit");
-        timerLabel = new JLabel("Timer: 0");
         errorLabel = new JLabel("Errors: 0");
 
         /*
@@ -119,7 +117,6 @@ public class MemoryGame extends JFrame implements ActionListener
         labelView.setLayout(new GridLayout(1, 4, 2, 2));
         labelView.add(quit);
         labelView.add(restart);
-        labelView.add(timerLabel);
         labelView.add(errorLabel);
 
         // Both panels should now be individually layed out
@@ -152,10 +149,8 @@ public class MemoryGame extends JFrame implements ActionListener
     private void restartGame()
     {
         pairsFound = 0;
-        gameTime = 0;
         clickCount = 0;
         errorCount = 0;
-        timerLabel.setText("Timer: 0");
         errorLabel.setText("Errors: 0");
 
         // Clear the boardView and have the gameBoard generate a new layout
@@ -167,8 +162,6 @@ public class MemoryGame extends JFrame implements ActionListener
 
     public boolean checkMatch(){
         boolean flag = false;
-        System.out.println(Selected1.getId());
-        System.out.println(Selected2.getId());
         if(Selected1.getId() == Selected2.getId()){
             flag = true;
         }
